@@ -1,0 +1,196 @@
+# ============================================
+# BizMap Mobile - .gitignore
+# ============================================
+
+# ============================================
+# General
+# ============================================
+*.log
+*.tmp
+*.temp
+*~
+*.swp
+*.bak
+.DS_Store
+Thumbs.db
+
+# ============================================
+# Android (BizMapAndroid/)
+# ============================================
+
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Gradle files
+.gradle/
+BizMapAndroid/.gradle/
+BizMapAndroid/build/
+BizMapAndroid/app/build/
+BizMapAndroid/local.properties
+
+# Android Studio
+BizMapAndroid/.idea/
+BizMapAndroid/*.iml
+BizMapAndroid/.navigation/
+BizMapAndroid/captures/
+BizMapAndroid/.externalNativeBuild/
+BizMapAndroid/.cxx/
+
+# NDK
+BizMapAndroid/obj/
+BizMapAndroid/cmake-build-*/
+
+# Keystore files (uncomment if needed)
+# *.jks
+# *.keystore
+
+# ============================================
+# iOS (BizMapiOS/)
+# ============================================
+
+# Xcode
+BizMapiOS/*.xcodeproj/xcuserdata/
+BizMapiOS/*.xcodeproj/project.xcworkspace/xcuserdata/
+BizMapiOS/*.xcworkspace/xcuserdata/
+BizMapiOS/DerivedData/
+BizMapiOS/build/
+BizMapiOS/*.moved-aside
+BizMapiOS/*.pbxuser
+BizMapiOS/*.mode1v3
+BizMapiOS/*.mode2v3
+BizMapiOS/*.perspectivev3
+BizMapiOS/!default.pbxuser
+BizMapiOS/!default.mode1v3
+BizMapiOS/!default.mode2v3
+BizMapiOS/!default.perspectivev3
+
+# CocoaPods
+BizMapiOS/Pods/
+BizMapiOS/*.xcworkspace
+BizMapiOS/Podfile.lock
+
+# Carthage
+BizMapiOS/Carthage/Build/
+
+# Swift Package Manager
+BizMapiOS/.build/
+BizMapiOS/Package.resolved
+
+# fastlane
+BizMapiOS/fastlane/report.xml
+BizMapiOS/fastlane/Preview.html
+BizMapiOS/fastlane/screenshots/
+BizMapiOS/fastlane/test_output/
+
+# Code Injection
+BizMapiOS/iOSInjectionProject/
+
+# Compiled libraries (ya están en libs/)
+# BizMapiOS/libs/ se mantiene en git
+
+# ============================================
+# C++ Library (cpp-lib/)
+# ============================================
+
+# Build directories
+cpp-lib/build/
+cpp-lib/build-*/
+cpp-lib/cmake-build-*/
+cpp-lib/out/
+cpp-lib/.vs/
+
+# CMake
+cpp-lib/CMakeCache.txt
+cpp-lib/CMakeFiles/
+cpp-lib/cmake_install.cmake
+cpp-lib/Makefile
+cpp-lib/compile_commands.json
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# IDE
+cpp-lib/.vscode/
+cpp-lib/.idea/
+
+# ============================================
+# Third Party (se mantienen en git)
+# ============================================
+# cpp-lib/third_party/httplib.h
+# cpp-lib/third_party/nlohmann/
+
+# ============================================
+# Documentation Build
+# ============================================
+docs/_build/
+docs/.doctrees/
+
+# ============================================
+# Testing
+# ============================================
+*.gcda
+*.gcno
+*.gcov
+coverage/
+test-results/
+
+# ============================================
+# IDE & Editors
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ============================================
+# OS Specific
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
