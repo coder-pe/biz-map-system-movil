@@ -6,7 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import org.json.JSONArray
+import com.aisoldev.bizmap.data.BizMapClient
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bizMapClient: BizMapClient
@@ -30,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         // Crear cliente BizMap
         try {
             // CAMBIAR esta IP por la de tu backend
-            bizMapClient = BizMapClient("http://10.0.2.2:8080") // 10.0.2.2 = localhost en emulador
-            updateStatus("✓ Cliente BizMap inicializado")
+            bizMapClient = BizMapClient("http://10.0.2.2:8080/api/v1") // 10.0.2.2 = localhost en emulador
+            updateStatus("Cliente BizMap inicializado")
         } catch (e: Exception) {
-            updateStatus("✗ Error: ${e.message}")
+            updateStatus("Error: ${e.message}")
             Log.e(TAG, "Error inicializando cliente", e)
             return
         }
@@ -65,21 +65,17 @@ class MainActivity : AppCompatActivity() {
         bizMapClient.login(
             username = username,
             password = password,
-            onSuccess = { accessToken, refreshToken, expiresIn ->
-                runOnUiThread {
-                    updateStatus("✓ Login exitoso!\nToken expira en $expiresIn segundos")
-                    bizMapClient.setAuthToken(accessToken)
-                    searchButton.isEnabled = true
-                    loginButton.isEnabled = true
-                    Log.i(TAG, "Access Token: ${accessToken.take(20)}...")
-                }
+            onSuccess = { accessToken, _, expiresIn ->
+                updateStatus("Login exitoso!\nToken expira en $expiresIn segundos")
+                bizMapClient.setAuthToken(accessToken)
+                searchButton.isEnabled = true
+                loginButton.isEnabled = true
+                Log.i(TAG, "Access Token: ${accessToken.take(20)}...")
             },
             onError = { statusCode, message ->
-                runOnUiThread {
-                    updateStatus("✗ Error en login:\nCódigo: $statusCode\n$message")
-                    loginButton.isEnabled = true
-                    Log.e(TAG, "Error login: $statusCode - $message")
-                }
+                updateStatus("Error en login:\nCódigo: $statusCode\n$message")
+                loginButton.isEnabled = true
+                Log.e(TAG, "Error login: $statusCode - $message")
             }
         )
     }
@@ -101,44 +97,33 @@ class MainActivity : AppCompatActivity() {
             maxPrice = 2000.0,
             category = "Electrónica",
             limit = 10,
-            onSuccess = { productsJson ->
-                runOnUiThread {
-                    try {
-                        val products = JSONArray(productsJson)
-                        val count = products.length()
+            onSuccess = { products ->
+                val count = products.size
 
-                        val resultText = buildString {
-                            append("✓ Encontrados $count productos:\n\n")
-                            for (i in 0 until count.coerceAtMost(5)) {
-                                val product = products.getJSONObject(i)
-                                val name = product.optString("name", "N/A")
-                                val price = product.optDouble("price", 0.0)
-                                val distance = product.optDouble("distance_meters", 0.0)
+                val resultText = buildString {
+                    append("Encontrados $count productos:\n\n")
+                    for ((index, item) in products.take(5).withIndex()) {
+                        val name = item.product.name
+                        val price = item.product.price
+                        val distance = item.distanceMeters ?: 0.0
 
-                                append("${i + 1}. $name\n")
-                                append("   Precio: S/. ${"%.2f".format(price)}\n")
-                                append("   Distancia: ${distance.toInt()}m\n\n")
-                            }
-                            if (count > 5) {
-                                append("... y ${count - 5} más")
-                            }
-                        }
-
-                        updateStatus(resultText)
-                        Log.i(TAG, "Productos encontrados: $count")
-                    } catch (e: Exception) {
-                        updateStatus("✗ Error parseando respuesta: ${e.message}")
-                        Log.e(TAG, "Error parseando JSON", e)
+                        append("${index + 1}. $name\n")
+                        append("   Precio: S/. ${"%.2f".format(price)}\n")
+                        append("   Distancia: ${distance.toInt()}m\n\n")
                     }
-                    searchButton.isEnabled = true
+                    if (count > 5) {
+                        append("... y ${count - 5} más")
+                    }
                 }
+
+                updateStatus(resultText)
+                searchButton.isEnabled = true
+                Log.i(TAG, "Productos encontrados: $count")
             },
             onError = { statusCode, message ->
-                runOnUiThread {
-                    updateStatus("✗ Error en búsqueda:\nCódigo: $statusCode\n$message")
-                    searchButton.isEnabled = true
-                    Log.e(TAG, "Error búsqueda: $statusCode - $message")
-                }
+                updateStatus("Error en búsqueda:\nCódigo: $statusCode\n$message")
+                searchButton.isEnabled = true
+                Log.e(TAG, "Error búsqueda: $statusCode - $message")
             }
         )
     }
